@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -25,10 +26,25 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<GenericResponse<StudentDto>> getAllStudents() throws Exception {
         List<StudentDto> listOfStudents = mapper.toList(service.findAll(), StudentDto.class);
+
         GenericResponse<StudentDto> response = new GenericResponse<>(
                 HttpStatus.OK.value(),
                 "success",
                 listOfStudents
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/ordered")
+    public ResponseEntity<GenericResponse<StudentDto>> getAllOrderedStudents() throws Exception {
+        List<StudentDto> listOfStudents = mapper.toList(service.findAll(), StudentDto.class);
+        List<StudentDto>listOfStudentsOrdered = listOfStudents.stream()
+                .sorted(Comparator.comparing(StudentDto::getAge).reversed())
+                .toList();
+        GenericResponse<StudentDto> response = new GenericResponse<>(
+                HttpStatus.OK.value(),
+                "success",
+                listOfStudentsOrdered
         );
         return ResponseEntity.ok(response);
     }
