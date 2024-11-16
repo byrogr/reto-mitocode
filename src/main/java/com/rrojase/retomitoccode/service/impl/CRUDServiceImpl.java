@@ -1,5 +1,6 @@
 package com.rrojase.retomitoccode.service.impl;
 
+import com.rrojase.retomitoccode.exception.ModelNotFoundException;
 import com.rrojase.retomitoccode.repository.IGenericRepository;
 import com.rrojase.retomitoccode.service.ICRUDService;
 
@@ -17,7 +18,7 @@ public abstract class CRUDServiceImpl<T, ID> implements ICRUDService<T, ID> {
 
     @Override
     public T findById(ID id) throws Exception {
-        return getRepository().findById(id).orElseThrow(null);
+        return getRepository().findById(id).orElseThrow(()-> new ModelNotFoundException("Resource with ID " + id + " not found"));
     }
 
     @Override
