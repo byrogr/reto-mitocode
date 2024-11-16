@@ -37,14 +37,14 @@ public class StudentController {
 
     @GetMapping("/ordered")
     public ResponseEntity<GenericResponse<StudentDto>> getAllOrderedStudents() throws Exception {
-        List<StudentDto> listOfStudents = mapper.toList(service.findAll(), StudentDto.class);
-        List<StudentDto>listOfStudentsOrdered = listOfStudents.stream()
-                .sorted(Comparator.comparing(StudentDto::getAge).reversed())
+        List<Student> listOfStudentsOrdered = service.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Student::getAge).reversed())
                 .toList();
         GenericResponse<StudentDto> response = new GenericResponse<>(
                 HttpStatus.OK.value(),
                 "success",
-                listOfStudentsOrdered
+                mapper.toList(listOfStudentsOrdered, StudentDto.class)
         );
         return ResponseEntity.ok(response);
     }
