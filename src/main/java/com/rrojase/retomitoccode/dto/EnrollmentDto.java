@@ -26,7 +26,6 @@ public class EnrollmentDto {
 
     @NotNull
     @JsonProperty(value = "estudiante")
-    @JsonIncludeProperties(value = "{id}")
     private StudentDto student;
 
     @NotNull
